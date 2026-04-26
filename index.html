@@ -165,6 +165,17 @@ input::placeholder,textarea::placeholder{color:var(--g4)}
   cursor:pointer;transition:all .12s;white-space:nowrap;
 }
 .btn-add:hover{background:var(--g1);border-color:var(--g1)}
+.fsort{
+  padding:5px 9px;border-radius:2px;
+  border:1px solid var(--border);
+  background:var(--white);
+  color:var(--g2);
+  font-family:'Roboto',sans-serif;
+  font-size:11px;letter-spacing:.3px;
+  cursor:pointer;outline:none;
+  transition:border-color .12s;
+}
+.fsort:hover,.fsort:focus{border-color:var(--org)}
 
 /* ── STATS ── */
 .stats{
@@ -414,6 +425,12 @@ input::placeholder,textarea::placeholder{color:var(--g4)}
 .star-btn.on{color:var(--org)}
 .star-btn:hover{color:var(--org-l)}
 .star-label{font-size:11px;color:var(--g3);margin-left:4px}
+
+/* MAIN LAYOUT */
+/* GRID override */
+.grid{padding:1.5rem 2.5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+
+
 </style>
 </head>
 <body>
@@ -458,6 +475,12 @@ input::placeholder,textarea::placeholder{color:var(--g4)}
     <button class="fbtn" data-f="r:4">★★★★</button>
     <button class="fbtn" data-f="r:3">★★★ ou menos</button>
   </div>
+  <select class="fsort" id="sort" onchange="curSort=this.value;renderGrid()">
+    <option value="date-desc">↓ Mais recentes</option>
+    <option value="date-asc">↑ Mais antigas</option>
+    <option value="stars-desc">↓ Maior nota</option>
+    <option value="stars-asc">↑ Menor nota</option>
+  </select>
   <button class="btn-add" onclick="openAdd()">+ Nova ficha</button>
 </div>
 
@@ -465,7 +488,7 @@ input::placeholder,textarea::placeholder{color:var(--g4)}
 <div class="stats" id="stats"></div>
 
 <!-- GRID -->
-<div class="grid" id="grid"></div>
+  <div class="grid" id="grid">
 
 <!-- MODAL: Nova ficha -->
 <div class="overlay" id="ov-add" onclick="if(event.target===this)closeAdd()">
@@ -606,11 +629,12 @@ async function ghWrite(data,sha){
 /* ── STATE ── */
 let fichas=[];
 let comments={};
-let citations={};    // {fichaId:[{text,source,ts}]}
+let citations={};
 let currentSha=null;
 let curCard=null;
 let curFilter='all';
 let curSearch='';
+let curSort='date-desc';
 let addRating=0;
 let addDatas=[];
 
@@ -619,8 +643,7 @@ function applyState(s){
   if(s.fichas)fichas=s.fichas;
   if(s.comments)comments=s.comments;
   if(s.citations)citations=s.citations;
-  renderStats();renderGrid();
-}
+    renderStats();renderGrid();}
 
 /* ── SYNC ── */
 function setSyncStatus(state,label,ts){
@@ -672,15 +695,19 @@ async function doPush(){
       mergedCitations[id]=[...remArr,...arr.filter(c=>!remTs.has(c.ts))];
     });
 
-    const merged={fichas:mergedFichas,comments:mergedComments,citations:mergedCitations,ts:new Date().toISOString()};
+    // Mescla quotes — append-only por id
+    const remoteQuotes=remote.quotes||[];
+    const remQIds=new Set(remoteQuotes.map(q=>q.id));
+    const mergedQuotes=[...remoteQuotes,...quotes.filter(q=>!remQIds.has(q.id))];
+
+    const merged={fichas:mergedFichas,comments:mergedComments,citations:mergedCitations:mergedQuotes,ts:new Date().toISOString()};
     await ghWrite(merged,currentSha);
 
     fichas=mergedFichas;comments=mergedComments;citations=mergedCitations;
     const{sha:newSha}=await ghRead();
     currentSha=newSha;
 
-    renderStats();renderGrid();
-    if(curCard){renderThread(curCard);renderCitations(curCard);}
+    renderStats();renderGrid();if(curCard){renderThread(curCard);renderCitations(curCard);}
 
     const t=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
     setSyncStatus('ok','Enviado','Enviado às '+t);
@@ -932,7 +959,7 @@ function fmtDate(d){
   try{const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`}catch{return d}
 }
 function getFiltered(){
-  return fichas.filter(f=>{
+  const filtered=fichas.filter(f=>{
     const q=curSearch.toLowerCase();
     const ok=!q||f.peca.toLowerCase().includes(q)||(f.teatro||'').toLowerCase().includes(q)||(f.elenco||'').toLowerCase().includes(q)||(f.direcao||'').toLowerCase().includes(q);
     if(!ok)return false;
@@ -942,6 +969,13 @@ function getFiltered(){
     if(curFilter==='r:4')return f.nota===4;
     if(curFilter==='r:3')return f.nota<=3&&f.nota>0;
     return true;
+  });
+  return filtered.sort((a,b)=>{
+    if(curSort==='date-desc')return new Date(b.ts)-new Date(a.ts);
+    if(curSort==='date-asc')return new Date(a.ts)-new Date(b.ts);
+    if(curSort==='stars-desc')return(b.nota||0)-(a.nota||0);
+    if(curSort==='stars-asc')return(a.nota||0)-(b.nota||0);
+    return 0;
   });
 }
 function renderStats(){
@@ -961,7 +995,7 @@ function renderGrid(){
     g.innerHTML=`<div class="empty-state"><p>Nenhuma ficha encontrada.</p><span>${fichas.length?'Ajuste os filtros ou a busca.':'Use "+ Nova ficha" para começar.'}</span></div>`;
     return;
   }
-  g.innerHTML=[...list].reverse().map(f=>{
+  g.innerHTML=list.map(f=>{
     const nc=(comments[f.id]||[]).length;
     const hasC=nc>0;
     return`<div class="card" onclick="openCard('${f.id}')">
