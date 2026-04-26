@@ -695,12 +695,7 @@ async function doPush(){
       mergedCitations[id]=[...remArr,...arr.filter(c=>!remTs.has(c.ts))];
     });
 
-    // Mescla quotes — append-only por id
-    const remoteQuotes=remote.quotes||[];
-    const remQIds=new Set(remoteQuotes.map(q=>q.id));
-    const mergedQuotes=[...remoteQuotes,...quotes.filter(q=>!remQIds.has(q.id))];
-
-    const merged={fichas:mergedFichas,comments:mergedComments,citations:mergedCitations:mergedQuotes,ts:new Date().toISOString()};
+    const merged={fichas:mergedFichas,comments:mergedComments,citations:mergedCitations,ts:new Date().toISOString()};
     await ghWrite(merged,currentSha);
 
     fichas=mergedFichas;comments=mergedComments;citations=mergedCitations;
