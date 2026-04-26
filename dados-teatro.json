@@ -42,8 +42,8 @@
       "datas": [
         "2025-04-26"
       ],
-      "teatro": "",
-      "elenco": "",
+      "teatro": "Frei Caneca",
+      "elenco": "Odilon Wagner",
       "direcao": "",
       "nota": 2,
       "ts": "2026-04-26T02:54:40.991Z"
@@ -80,5 +80,5 @@
     ]
   },
   "groupCitations": [],
-  "ts": "2026-04-26T03:00:49.826Z"
+  "ts": "2026-04-26T03:01:01.597Z"
 }
