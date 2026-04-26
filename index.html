@@ -586,8 +586,8 @@ async function doPush(){
   try{
     const{data:remote,sha:freshSha}=await ghRead();
     currentSha=freshSha;
-    const existIds=new Set(remote.fichas.map(f=>f.id));
-    const mergedFichas=[...remote.fichas,...fichas.filter(f=>!existIds.has(f.id))];
+    const localIds=new Set(fichas.map(f=>f.id));
+    const mergedFichas=[...fichas,...remote.fichas.filter(f=>!localIds.has(f.id))];
     const mergedComments={...remote.comments||{}};
     Object.entries(comments).forEach(([id,arr])=>{
       const remArr=mergedComments[id]||[];
