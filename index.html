@@ -423,7 +423,33 @@ input::placeholder,textarea::placeholder{color:var(--g4)}
       <button class="mclose" onclick="closeCard()">✕</button>
     </div>
     <div class="mbody">
+
+      <!-- Detalhes editáveis -->
+      <div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--g5)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem .9rem">
+          <div style="grid-column:1/-1">
+            <label class="flbl">Teatro / Local</label>
+            <input type="text" class="finput" id="card-teatro" placeholder="Nome do teatro ou espaço" style="margin-bottom:0">
+          </div>
+          <div style="grid-column:1/-1">
+            <label class="flbl">Elenco <span>— nomes separados por vírgula</span></label>
+            <input type="text" class="finput" id="card-elenco" placeholder="Ex: Maria Silva, João Souza…" style="margin-bottom:0">
+          </div>
+          <div style="grid-column:1/-1">
+            <label class="flbl">Direção</label>
+            <input type="text" class="finput" id="card-direcao" placeholder="Nome do(a) diretor(a)" style="margin-bottom:0">
+          </div>
+        </div>
+        <div class="mactions" style="margin-top:.75rem">
+          <button class="btn-secondary" onclick="saveCardDetails()">Salvar detalhes</button>
+          <span class="msg-ok" id="msg-details">✓ Salvo</span>
+        </div>
+      </div>
+
+      <!-- Nota -->
       <div id="card-info" style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--g5)"></div>
+
+      <!-- Sessões -->
       <div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--g5)">
         <div class="fsec-title">Sessões assistidas</div>
         <div id="card-datas" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.6rem"></div>
@@ -432,6 +458,7 @@ input::placeholder,textarea::placeholder{color:var(--g4)}
           <button type="button" class="btn-secondary" onclick="addSessionToCard()">+ Sessão</button>
         </div>
       </div>
+
       <div class="fsec-title">Discussão</div>
       <div class="thread-wrap" id="card-thread"></div>
       <div class="new-comment-area">
@@ -721,9 +748,13 @@ function openCard(id){
   const f=fichas.find(x=>x.id===id);if(!f)return;curCard=id;
   document.getElementById('card-peca').textContent=f.peca;
   document.getElementById('card-sub').textContent=f.teatro||'';
+  // Populate editable detail fields
+  document.getElementById('card-teatro').value=f.teatro||'';
+  document.getElementById('card-elenco').value=f.elenco||'';
+  document.getElementById('card-direcao').value=f.direcao||'';
+  document.getElementById('msg-details').classList.remove('show');
+  // Nota display
   const info=[];
-  if(f.direcao)info.push(`<div><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--g3)">Direção</span><div style="font-size:13px;color:var(--g1)">${f.direcao}</div></div>`);
-  if(f.elenco)info.push(`<div><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--g3)">Elenco</span><div style="font-size:13px;color:var(--g1)">${f.elenco}</div></div>`);
   if(f.nota)info.push(`<div><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--g3)">Nota</span><div style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--org)">${starsHtml(f.nota)}</div></div>`);
   document.getElementById('card-info').innerHTML=info.length?`<div style="display:flex;gap:1.5rem;flex-wrap:wrap">${info.join('')}</div>`:'';
   document.getElementById('card-data-input').value='';
@@ -734,6 +765,18 @@ function openCard(id){
   document.getElementById('ov-card').classList.add('open');
 }
 function closeCard(){document.getElementById('ov-card').classList.remove('open');curCard=null}
+function saveCardDetails(){
+  if(!curCard)return;
+  const f=fichas.find(x=>x.id===curCard);if(!f)return;
+  f.teatro=document.getElementById('card-teatro').value.trim();
+  f.elenco=document.getElementById('card-elenco').value.trim();
+  f.direcao=document.getElementById('card-direcao').value.trim();
+  document.getElementById('card-sub').textContent=f.teatro||'';
+  renderGrid();
+  const msg=document.getElementById('msg-details');
+  msg.classList.add('show');setTimeout(()=>msg.classList.remove('show'),2000);
+  doPush().catch(()=>{});
+}
 function publishComment(){
   if(!curCard)return;
   const txt=document.getElementById('card-comment').value.trim();if(!txt)return;
