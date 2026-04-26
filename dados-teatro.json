@@ -1,4 +1,19 @@
 {
-  "fichas": [],
-  "comments": {}
+  "fichas": [
+    {
+      "id": "f-1777169953573",
+      "peca": "Senhora dos Afogados",
+      "datas": [
+        "2025-05-03"
+      ],
+      "teatro": "",
+      "elenco": "",
+      "direcao": "",
+      "nota": 5,
+      "ts": "2026-04-26T02:19:13.573Z"
+    }
+  ],
+  "comments": {},
+  "groupCitations": [],
+  "ts": "2026-04-26T02:19:13.597Z"
 }
