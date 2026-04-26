@@ -18,8 +18,8 @@
       "datas": [
         "2025-04-27"
       ],
-      "teatro": "",
-      "elenco": "",
+      "teatro": "Teatro Vivo",
+      "elenco": "Robson Torini",
       "direcao": "",
       "nota": 3,
       "ts": "2026-04-26T02:29:16.685Z"
@@ -80,5 +80,5 @@
     ]
   },
   "groupCitations": [],
-  "ts": "2026-04-26T03:00:37.353Z"
+  "ts": "2026-04-26T03:00:49.826Z"
 }
