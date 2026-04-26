@@ -47,6 +47,18 @@
       "direcao": "",
       "nota": 2,
       "ts": "2026-04-26T02:54:40.991Z"
+    },
+    {
+      "id": "f-1777172573662",
+      "peca": "A Casa de Bernarda Alba - Satyros",
+      "datas": [
+        "2025-04-25"
+      ],
+      "teatro": "",
+      "elenco": "",
+      "direcao": "",
+      "nota": 5,
+      "ts": "2026-04-26T03:02:53.662Z"
     }
   ],
   "comments": {
@@ -80,5 +92,5 @@
     ]
   },
   "groupCitations": [],
-  "ts": "2026-04-26T03:01:01.597Z"
+  "ts": "2026-04-26T03:02:53.691Z"
 }
