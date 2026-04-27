@@ -83,6 +83,18 @@
       "direcao": "",
       "nota": 3,
       "ts": "2026-04-27T12:45:07.675Z"
+    },
+    {
+      "id": "f-1777293997594",
+      "peca": "Uma coisa engraçada aconteceu a caminho do fórum..",
+      "datas": [
+        "2025-04-12"
+      ],
+      "teatro": "",
+      "elenco": "",
+      "direcao": "",
+      "nota": 3,
+      "ts": "2026-04-27T12:46:37.594Z"
     }
   ],
   "comments": {
@@ -123,5 +135,5 @@
     ]
   },
   "groupCitations": [],
-  "ts": "2026-04-27T12:45:37.450Z"
+  "ts": "2026-04-27T12:46:37.606Z"
 }
