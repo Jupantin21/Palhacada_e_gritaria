@@ -241,6 +241,18 @@
       "direcao": "",
       "nota": 3,
       "ts": "2026-04-27T13:00:21.435Z"
+    },
+    {
+      "id": "f-1777294858688",
+      "peca": "Hamlet, Shakespeare Embriagado",
+      "datas": [
+        "2026-04-17"
+      ],
+      "teatro": "",
+      "elenco": "",
+      "direcao": "",
+      "nota": 5,
+      "ts": "2026-04-27T13:00:58.688Z"
     }
   ],
   "comments": {
@@ -281,5 +293,5 @@
     ]
   },
   "groupCitations": [],
-  "ts": "2026-04-27T13:00:21.459Z"
+  "ts": "2026-04-27T13:00:58.706Z"
 }
