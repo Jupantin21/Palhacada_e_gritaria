@@ -90,8 +90,8 @@
       "datas": [
         "2025-04-12"
       ],
-      "teatro": "",
-      "elenco": "",
+      "teatro": "Teatro Claro",
+      "elenco": "Miguel Fallabela",
       "direcao": "",
       "nota": 3,
       "ts": "2026-04-27T12:46:37.594Z"
@@ -135,5 +135,5 @@
     ]
   },
   "groupCitations": [],
-  "ts": "2026-04-27T12:46:37.606Z"
+  "ts": "2026-04-27T12:46:56.164Z"
 }
