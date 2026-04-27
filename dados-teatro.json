@@ -156,6 +156,18 @@
       "direcao": "",
       "nota": 5,
       "ts": "2026-04-27T12:52:23.724Z"
+    },
+    {
+      "id": "f-1777294400272",
+      "peca": "La casa de Bernarda Alba, Barcelona",
+      "datas": [
+        "2025-10-12"
+      ],
+      "teatro": "",
+      "elenco": "",
+      "direcao": "",
+      "nota": 3,
+      "ts": "2026-04-27T12:53:20.272Z"
     }
   ],
   "comments": {
@@ -196,5 +208,5 @@
     ]
   },
   "groupCitations": [],
-  "ts": "2026-04-27T12:52:23.759Z"
+  "ts": "2026-04-27T12:53:20.294Z"
 }
